@@ -14,6 +14,8 @@ def _main_(args):
     config_path  = args.conf
     input_path   = args.input
     output_path  = args.output
+    
+    print(output_path)
 
     with open(config_path) as config_buffer:    
         config = json.load(config_buffer)
@@ -111,16 +113,17 @@ def _main_(args):
         # the main loop
         for image_path in image_paths:
             image = cv2.imread(image_path)
-            print(image_path)
+#             print(image_path)
 
             # predict the bounding boxes
             boxes = get_yolo_boxes(infer_model, [image], net_h, net_w, config['model']['anchors'], obj_thresh, nms_thresh)[0]
-
+            
             # draw bounding boxes on the image using labels
             draw_boxes(image, boxes, config['model']['labels'], obj_thresh) 
      
             # write the image with bounding boxes to file
-            cv2.imwrite(output_path + image_path.split('/')[-1], np.uint8(image))         
+            cv2.imwrite(output_path + image_path.split('/')[-1], np.uint8(image))  
+            print(output_path + image_path.split('/')[-1])
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser(description='Predict with a trained yolo model')
